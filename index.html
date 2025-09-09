@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Artwork Gallery</title>
   <link rel="stylesheet" href="windows.css">
-  <script src="https://raw.githubusercontent.com/dannybellieveit/artwork-snake/main/public/images-data.js"></script>
 </head>
 <body>
   <div class="window" id="galleryWindow" style="display:none;">
@@ -36,23 +35,32 @@
   <script>
     const gallery = document.querySelector('.gallery');
     const baseUrl = 'https://raw.githubusercontent.com/dannybellieveit/artwork-snake/main/public/';
-    if (Array.isArray(window.imagesData)) {
-      window.imagesData.forEach(({ src, title, artist, spotifyUrl }) => {
-        const fig = document.createElement('figure');
-        const img = document.createElement('img');
-        img.src = baseUrl + src;
-        img.alt = title;
-        const cap = document.createElement('figcaption');
-        const link = document.createElement('a');
-        link.href = spotifyUrl;
-        link.textContent = `${title} – ${artist}`;
-        link.target = '_blank';
-        cap.appendChild(link);
-        fig.appendChild(img);
-        fig.appendChild(cap);
-        gallery.appendChild(fig);
-      });
-    }
+
+    fetch(baseUrl + 'images-data.js')
+      .then(res => res.text())
+      .then(text => {
+        const script = document.createElement('script');
+        script.textContent = text;
+        document.head.appendChild(script);
+        if (Array.isArray(window.imagesData)) {
+          window.imagesData.forEach(({ src, title, artist, spotifyUrl }) => {
+            const fig = document.createElement('figure');
+            const img = document.createElement('img');
+            img.src = baseUrl + src;
+            img.alt = title;
+            const cap = document.createElement('figcaption');
+            const link = document.createElement('a');
+            link.href = spotifyUrl;
+            link.textContent = `${title} – ${artist}`;
+            link.target = '_blank';
+            cap.appendChild(link);
+            fig.appendChild(img);
+            fig.appendChild(cap);
+            gallery.appendChild(fig);
+          });
+        }
+      })
+      .catch(err => console.error('Failed to load images:', err));
 
     const startBtn = document.getElementById('startBtn');
     const startMenu = document.getElementById('startMenu');
