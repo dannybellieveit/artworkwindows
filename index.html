@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artwork Gallery</title>
+  <link rel="stylesheet" href="windows.css">
+  <script src="https://raw.githubusercontent.com/dannybellieveit/artwork-snake/main/public/images-data.js"></script>
+</head>
+<body>
+  <div class="window" id="galleryWindow" style="display:none;">
+    <div class="title-bar">
+      <div class="title-bar-text">Artwork Gallery</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <div class="gallery"></div>
+    </div>
+  </div>
+
+  <div class="start-menu hidden" id="startMenu">
+    <ul>
+      <li id="openGallery">Artwork Gallery</li>
+    </ul>
+  </div>
+
+  <div class="taskbar">
+    <button class="start-button" id="startBtn">Start</button>
+    <div class="taskbar-item" id="galleryTab" style="display:none;">Gallery</div>
+  </div>
+
+  <script>
+    const gallery = document.querySelector('.gallery');
+    const baseUrl = 'https://raw.githubusercontent.com/dannybellieveit/artwork-snake/main/public/';
+    if (Array.isArray(window.imagesData)) {
+      window.imagesData.forEach(({ src, title, artist, spotifyUrl }) => {
+        const fig = document.createElement('figure');
+        const img = document.createElement('img');
+        img.src = baseUrl + src;
+        img.alt = title;
+        const cap = document.createElement('figcaption');
+        const link = document.createElement('a');
+        link.href = spotifyUrl;
+        link.textContent = `${title} – ${artist}`;
+        link.target = '_blank';
+        cap.appendChild(link);
+        fig.appendChild(img);
+        fig.appendChild(cap);
+        gallery.appendChild(fig);
+      });
+    }
+
+    const startBtn = document.getElementById('startBtn');
+    const startMenu = document.getElementById('startMenu');
+    const galleryWindow = document.getElementById('galleryWindow');
+    const galleryTab = document.getElementById('galleryTab');
+
+    startBtn.addEventListener('click', () => {
+      startMenu.classList.toggle('hidden');
+    });
+
+    document.getElementById('openGallery').addEventListener('click', () => {
+      galleryWindow.style.display = 'block';
+      galleryTab.style.display = 'inline-block';
+      startMenu.classList.add('hidden');
+    });
+
+    const titleBar = galleryWindow.querySelector('.title-bar');
+    let offsetX = 0, offsetY = 0, isDown = false;
+
+    titleBar.addEventListener('mousedown', (e) => {
+      isDown = true;
+      offsetX = e.clientX - galleryWindow.offsetLeft;
+      offsetY = e.clientY - galleryWindow.offsetTop;
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDown = false;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      galleryWindow.style.left = `${e.clientX - offsetX}px`;
+      galleryWindow.style.top = `${e.clientY - offsetY}px`;
+    });
+
+    const closeBtn = galleryWindow.querySelector('button[aria-label="Close"]');
+    closeBtn.addEventListener('click', () => {
+      galleryWindow.style.display = 'none';
+      galleryTab.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
