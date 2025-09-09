@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"No tests\"",
     "dev": "wrangler pages dev .",
-    "deploy": "wrangler pages publish ."
+    "deploy": "wrangler pages deploy ."
   },
   "keywords": [],
   "author": "",
