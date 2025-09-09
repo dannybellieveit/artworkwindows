@@ -20,3 +20,5 @@ Deploy to Cloudflare with:
 ```
 npm run deploy
 ```
+
+This uses `wrangler pages deploy .` under the hood to publish the site.
