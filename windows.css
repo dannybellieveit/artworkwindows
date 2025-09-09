@@ -2,9 +2,9 @@ body {
   background: #008080;
   font-family: 'MS Sans Serif', 'Segoe UI', sans-serif;
   margin: 0;
-codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   height: 100vh;
   overflow: hidden;
+  cursor: default;
 }
 
 .hidden {
@@ -31,7 +31,6 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
- codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   cursor: move;
 
 }
@@ -41,7 +40,6 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   height: 14px;
   margin-left: 2px;
   border: none;
-codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   padding: 0;
   background: #C0C0C0;
   box-shadow: -1px -1px 0 #fff, 1px 1px 0 #808080;
@@ -70,9 +68,9 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
 
 .window-body {
   padding: 10px;
-codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
-  background: #C0C0C0;
-
+  background: #fff;
+  height: 400px;
+  overflow: auto;
 }
 
 .gallery {
@@ -99,7 +97,6 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   font-size: 0.9rem;
   margin-top: 4px;
 }
- codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
 
 .taskbar {
   position: fixed;
@@ -122,6 +119,14 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   border: 2px solid;
   border-color: #fff #808080 #808080 #fff;
   box-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #808080;
+  display: flex;
+  align-items: center;
+}
+
+.start-button .start-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
 }
 
 .start-button:active {
