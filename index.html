@@ -9,7 +9,6 @@
 </head>
 <body>
   <div class="window" id="galleryWindow" style="display:none;">
-
     <div class="title-bar">
       <div class="title-bar-text">Artwork Gallery</div>
       <div class="title-bar-controls">
@@ -23,9 +22,83 @@
     </div>
   </div>
 
+  <div class="window" id="aboutWindow" style="display:none;">
+    <div class="title-bar">
+      <div class="title-bar-text">About</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <p>A retro-styled gallery showcasing artwork in a classic Windows shell.</p>
+    </div>
+  </div>
+
+  <div class="window" id="contactWindow" style="display:none;">
+    <div class="title-bar">
+      <div class="title-bar-text">Contact</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body" id="contactBody"></div>
+  </div>
+
+  <div class="window" id="gamesWindow" style="display:none;">
+    <div class="title-bar">
+      <div class="title-bar-text">Games</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <ul class="games-list">
+        <li id="launchSnake">Snake</li>
+        <li id="launchMinesweeper">Minesweeper</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="window" id="snakeWindow" style="display:none;">
+    <div class="title-bar">
+      <div class="title-bar-text">Snake</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <canvas id="snakeCanvas" width="200" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="window" id="minesweeperWindow" style="display:none;">
+    <div class="title-bar">
+      <div class="title-bar-text">Minesweeper</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <div id="minesweeperGrid" class="ms-grid"></div>
+    </div>
+  </div>
+
   <div class="start-menu hidden" id="startMenu">
     <ul>
-      <li id="openGallery">Artwork Gallery</li>
+      <li id="openGallery">Gallery</li>
+      <li id="openGames">Games</li>
+      <li id="openAbout">About</li>
+      <li id="openContact">Contact</li>
     </ul>
   </div>
 
@@ -34,6 +107,11 @@
       <img src="https://win98icons.alexmeub.com/icons/png/start.png" alt="" class="start-icon">Start
     </button>
     <div class="taskbar-item" id="galleryTab" style="display:none;">Gallery</div>
+    <div class="taskbar-item" id="gamesTab" style="display:none;">Games</div>
+    <div class="taskbar-item" id="aboutTab" style="display:none;">About</div>
+    <div class="taskbar-item" id="contactTab" style="display:none;">Contact</div>
+    <div class="taskbar-item" id="snakeTab" style="display:none;">Snake</div>
+    <div class="taskbar-item" id="minesweeperTab" style="display:none;">Minesweeper</div>
   </div>
 
   <script>
@@ -68,8 +146,6 @@
 
     const startBtn = document.getElementById('startBtn');
     const startMenu = document.getElementById('startMenu');
-    const galleryWindow = document.getElementById('galleryWindow');
-    const galleryTab = document.getElementById('galleryTab');
 
     startBtn.addEventListener('click', () => {
       startMenu.classList.toggle('hidden');
@@ -81,49 +157,205 @@
       }
     });
 
-    document.getElementById('openGallery').addEventListener('click', () => {
-      galleryWindow.style.display = 'block';
-      galleryTab.style.display = 'inline-block';
-      startMenu.classList.add('hidden');
+    function setupWindow(id, tabId) {
+      const win = document.getElementById(id);
+      const tab = tabId ? document.getElementById(tabId) : null;
+      const titleBar = win.querySelector('.title-bar');
+      let offsetX = 0, offsetY = 0, isDown = false;
+
+      titleBar.addEventListener('mousedown', (e) => {
+        isDown = true;
+        offsetX = e.clientX - win.offsetLeft;
+        offsetY = e.clientY - win.offsetTop;
+      });
+
+      document.addEventListener('mouseup', () => { isDown = false; });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        win.style.left = `${e.clientX - offsetX}px`;
+        win.style.top = `${e.clientY - offsetY}px`;
+      });
+
+      const closeBtn = win.querySelector('button[aria-label="Close"]');
+      closeBtn.addEventListener('click', () => {
+        win.style.display = 'none';
+        if (tab) tab.style.display = 'none';
+      });
+
+      const minimizeBtn = win.querySelector('button[aria-label="Minimize"]');
+      minimizeBtn.addEventListener('click', () => {
+        win.style.display = 'none';
+      });
+
+      if (tab) {
+        tab.addEventListener('click', () => {
+          win.style.display = win.style.display === 'none' ? 'block' : 'none';
+        });
+      }
+    }
+
+    const menuMapping = [
+      { trigger: 'openGallery', win: 'galleryWindow', tab: 'galleryTab' },
+      { trigger: 'openGames', win: 'gamesWindow', tab: 'gamesTab' },
+      { trigger: 'openAbout', win: 'aboutWindow', tab: 'aboutTab' },
+      { trigger: 'openContact', win: 'contactWindow', tab: 'contactTab' }
+    ];
+
+    menuMapping.forEach(({ trigger, win, tab }) => {
+      setupWindow(win, tab);
+      document.getElementById(trigger).addEventListener('click', () => {
+        document.getElementById(win).style.display = 'block';
+        document.getElementById(tab).style.display = 'inline-block';
+        startMenu.classList.add('hidden');
+      });
     });
 
-    const titleBar = galleryWindow.querySelector('.title-bar');
-    let offsetX = 0, offsetY = 0, isDown = false;
+    // Contact info from artwork-snake repo
+    fetch(baseUrl + 'index.html')
+      .then(res => res.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const contacts = doc.querySelector('.contacts');
+        if (contacts) {
+          document.getElementById('contactBody').appendChild(contacts);
+        }
+      })
+      .catch(() => {
+        document.getElementById('contactBody').textContent = 'Contact info unavailable.';
+      });
 
-    titleBar.addEventListener('mousedown', (e) => {
-      isDown = true;
-      offsetX = e.clientX - galleryWindow.offsetLeft;
-      offsetY = e.clientY - galleryWindow.offsetTop;
-    });
+    // Games
+    setupWindow('snakeWindow', 'snakeTab');
+    setupWindow('minesweeperWindow', 'minesweeperTab');
 
-    document.addEventListener('mouseup', () => {
-      isDown = false;
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      galleryWindow.style.left = `${e.clientX - offsetX}px`;
-      galleryWindow.style.top = `${e.clientY - offsetY}px`;
-    });
-
-    const closeBtn = galleryWindow.querySelector('button[aria-label="Close"]');
-    closeBtn.addEventListener('click', () => {
-      galleryWindow.style.display = 'none';
-      galleryTab.style.display = 'none';
-    });
-
-    const minimizeBtn = galleryWindow.querySelector('button[aria-label="Minimize"]');
-    minimizeBtn.addEventListener('click', () => {
-      galleryWindow.style.display = 'none';
-    });
-
-    galleryTab.addEventListener('click', () => {
-      if (galleryWindow.style.display === 'none') {
-        galleryWindow.style.display = 'block';
-      } else {
-        galleryWindow.style.display = 'none';
+    document.getElementById('launchSnake').addEventListener('click', () => {
+      document.getElementById('snakeWindow').style.display = 'block';
+      document.getElementById('snakeTab').style.display = 'inline-block';
+      if (!window.snakeStarted) {
+        initSnake();
+        window.snakeStarted = true;
       }
     });
+
+    document.getElementById('launchMinesweeper').addEventListener('click', () => {
+      document.getElementById('minesweeperWindow').style.display = 'block';
+      document.getElementById('minesweeperTab').style.display = 'inline-block';
+      if (!window.minesweeperStarted) {
+        initMinesweeper();
+        window.minesweeperStarted = true;
+      }
+    });
+
+codex/enhance-old-windows-machine-theme-2hw4b6
+    function initSnake() {
+      const canvas = document.getElementById('snakeCanvas');
+      const ctx = canvas.getContext('2d');
+      const size = 10;
+      let snake = [{ x: 10, y: 10 }];
+      let dir = { x: 1, y: 0 };
+      let apple = { x: 5, y: 5 };
+
+      function placeApple() {
+        apple.x = Math.floor(Math.random() * 20);
+        apple.y = Math.floor(Math.random() * 20);
+      }
+
+      function gameLoop() {
+        const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+        if (
+          head.x < 0 || head.y < 0 || head.x >= 20 || head.y >= 20 ||
+          snake.some(s => s.x === head.x && s.y === head.y)
+        ) {
+          snake = [{ x: 10, y: 10 }];
+          dir = { x: 1, y: 0 };
+          placeApple();
+        } else {
+          snake.unshift(head);
+          if (head.x === apple.x && head.y === apple.y) {
+            placeApple();
+          } else {
+            snake.pop();
+          }
+        }
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, 200, 200);
+        ctx.fillStyle = 'lime';
+        snake.forEach(s => ctx.fillRect(s.x * size, s.y * size, size, size));
+        ctx.fillStyle = 'red';
+        ctx.fillRect(apple.x * size, apple.y * size, size, size);
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp' && dir.y !== 1) dir = { x: 0, y: -1 };
+        if (e.key === 'ArrowDown' && dir.y !== -1) dir = { x: 0, y: 1 };
+        if (e.key === 'ArrowLeft' && dir.x !== 1) dir = { x: -1, y: 0 };
+        if (e.key === 'ArrowRight' && dir.x !== -1) dir = { x: 1, y: 0 };
+      });
+
+      setInterval(gameLoop, 200);
+    }
+
+    function initMinesweeper() {
+      const gridEl = document.getElementById('minesweeperGrid');
+      const size = 8;
+      const bombs = 10;
+      const cells = [];
+      const grid = Array(size * size).fill(0);
+      const bombSet = new Set();
+
+      while (bombSet.size < bombs) bombSet.add(Math.floor(Math.random() * size * size));
+      bombSet.forEach(pos => {
+        grid[pos] = -1;
+        const x = pos % size;
+        const y = Math.floor(pos / size);
+        for (let dx = -1; dx <= 1; dx++) {
+          for (let dy = -1; dy <= 1; dy++) {
+            if (dx === 0 && dy === 0) continue;
+            const nx = x + dx, ny = y + dy;
+            if (nx >= 0 && ny >= 0 && nx < size && ny < size) {
+              const npos = ny * size + nx;
+              if (grid[npos] !== -1) grid[npos]++;
+            }
+          }
+        }
+      });
+
+      for (let i = 0; i < size * size; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'ms-cell';
+        btn.addEventListener('click', () => reveal(i));
+        gridEl.appendChild(btn);
+        cells.push(btn);
+      }
+
+      function reveal(i) {
+        const cell = cells[i];
+        if (cell.disabled) return;
+        cell.disabled = true;
+        if (grid[i] === -1) {
+          cell.textContent = '*';
+          cells.forEach(c => c.disabled = true);
+        } else if (grid[i] > 0) {
+          cell.textContent = grid[i];
+        } else {
+          const x = i % size;
+          const y = Math.floor(i / size);
+          for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+              if (dx === 0 && dy === 0) continue;
+              const nx = x + dx, ny = y + dy;
+              if (nx >= 0 && ny >= 0 && nx < size && ny < size) {
+                reveal(ny * size + nx);
+              }
+            }
+          }
+        }
+      }
+    }
+
   </script>
 
 </body>
