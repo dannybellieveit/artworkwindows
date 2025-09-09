@@ -2,14 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Artwork Gallery</title>
   <link rel="stylesheet" href="windows.css">
 </head>
 <body>
-codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   <div class="window" id="galleryWindow" style="display:none;">
 
     <div class="title-bar">
@@ -21,7 +19,6 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
       </div>
     </div>
     <div class="window-body">
-codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
       <div class="gallery"></div>
     </div>
   </div>
@@ -33,7 +30,9 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
   </div>
 
   <div class="taskbar">
-    <button class="start-button" id="startBtn">Start</button>
+    <button class="start-button" id="startBtn">
+      <img src="https://win98icons.alexmeub.com/icons/png/start.png" alt="" class="start-icon">Start
+    </button>
     <div class="taskbar-item" id="galleryTab" style="display:none;">Gallery</div>
   </div>
 
@@ -111,6 +110,19 @@ codex/create-html-page-for-artworks-in-windows-ui-style-lacf8m
     closeBtn.addEventListener('click', () => {
       galleryWindow.style.display = 'none';
       galleryTab.style.display = 'none';
+    });
+
+    const minimizeBtn = galleryWindow.querySelector('button[aria-label="Minimize"]');
+    minimizeBtn.addEventListener('click', () => {
+      galleryWindow.style.display = 'none';
+    });
+
+    galleryTab.addEventListener('click', () => {
+      if (galleryWindow.style.display === 'none') {
+        galleryWindow.style.display = 'block';
+      } else {
+        galleryWindow.style.display = 'none';
+      }
     });
   </script>
 
