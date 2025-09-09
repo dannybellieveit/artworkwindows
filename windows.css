@@ -1,0 +1,63 @@
+body {
+  background: #008080;
+  font-family: 'MS Sans Serif', 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+.window {
+  width: 80%;
+  max-width: 800px;
+  margin: 40px auto;
+  border: 2px solid #000;
+  box-shadow: -1px -1px 0 #fff, 1px 1px 0 #808080, -2px -2px 0 #dfdfdf, 2px 2px 0 #000;
+  background: #C0C0C0;
+}
+
+.title-bar {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #fff;
+  padding: 2px 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.title-bar-controls button {
+  width: 16px;
+  height: 14px;
+  margin-left: 2px;
+  border: none;
+  background: #C0C0C0;
+  box-shadow: -1px -1px 0 #fff, 1px 1px 0 #808080;
+  padding: 0;
+}
+
+.window-body {
+  padding: 10px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.gallery figure {
+  margin: 0;
+  padding: 2px;
+  border: 2px solid #fff;
+  background: #C0C0C0;
+  box-shadow: 1px 1px 0 #808080, -1px -1px 0 #fff;
+}
+
+.gallery img {
+  width: 100%;
+  display: block;
+}
+
+.gallery figcaption {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
