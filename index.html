@@ -104,7 +104,7 @@
 
   <div class="taskbar">
     <button class="start-button" id="startBtn">
-      <img src="https://win98icons.alexmeub.com/icons/png/start.png" alt="" class="start-icon">Start
+      <span class="start-icon" aria-hidden="true"></span>Start
     </button>
     <div class="taskbar-item" id="galleryTab" style="display:none;">Gallery</div>
     <div class="taskbar-item" id="gamesTab" style="display:none;">Games</div>
@@ -248,7 +248,6 @@
       }
     });
 
-codex/enhance-old-windows-machine-theme-2hw4b6
     function initSnake() {
       const canvas = document.getElementById('snakeCanvas');
       const ctx = canvas.getContext('2d');

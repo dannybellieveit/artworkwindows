@@ -97,7 +97,6 @@ body {
   font-size: 0.9rem;
   margin-top: 4px;
 }
-codex/enhance-old-windows-machine-theme-2hw4b6
 
 .games-list {
   list-style: none;
@@ -144,6 +143,13 @@ codex/enhance-old-windows-machine-theme-2hw4b6
   width: 20px;
   height: 20px;
   margin-right: 4px;
+  display: inline-block;
+  background:
+    linear-gradient(90deg, #00a4ef 50%, #f25022 50%),
+    linear-gradient(90deg, #ffb900 50%, #7fba00 50%);
+  background-size: 100% 50%;
+  background-position: 0 0, 0 100%;
+  background-repeat: no-repeat;
 }
 
 .start-button:active {
